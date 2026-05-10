@@ -1,0 +1,9 @@
+{
+    "go.buildFlags": [
+        "-tags=integration"
+    ],
+    "go.testTags": "integration",
+    "go.testFlags": [
+        "-count=1"
+    ]
+}
