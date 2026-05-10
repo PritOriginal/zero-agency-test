@@ -1,0 +1,9 @@
+services:
+  bot-http:
+    build:
+      context: .
+      dockerfile: ./docker/http/Dockerfile
+      target: final
+    container_name: bot-http
+    stdin_open: true
+    tty: true

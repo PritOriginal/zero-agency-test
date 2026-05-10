@@ -1,0 +1,9 @@
+services:
+  bot-openai:
+    build:
+      context: .
+      dockerfile: ./docker/openai/Dockerfile
+      target: final
+    container_name: bot-openai
+    stdin_open: true
+    tty: true
