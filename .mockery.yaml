@@ -1,0 +1,8 @@
+template: testify
+packages:
+  github.com/PritOriginal/zero-agency-test/internal/classifier:
+    config:
+      all: true
+  github.com/PritOriginal/zero-agency-test/internal/router:
+    config:
+      all: true
