@@ -1,0 +1,5 @@
+env: local
+open_ai:
+  model: gpt-oss-20b
+  url:
+  api_key: 
