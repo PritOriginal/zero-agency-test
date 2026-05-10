@@ -3,7 +3,6 @@ package bot
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"log/slog"
 	"os"
 	"syscall"
@@ -70,7 +69,7 @@ func (b *Bot) Run() {
 		if userInput == "exit" {
 			err := syscall.Kill(pid, syscall.SIGINT)
 			if err != nil {
-				log.Printf("Error sending signal: %v", err)
+				b.log.Error("error sending signal: %w", logger.Err(err))
 			}
 			break
 		}
