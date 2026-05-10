@@ -15,6 +15,9 @@
 │   ├── bot-http    - Версия с использованием стандартных библиотек
 │   └── bot-openai  - Версия с использованием официальной библиотеки openai/openai-go
 ├── configs         - Файлы конфигурации
+├── docker          - Docker файлы
+│   ├── http
+│   └── openai
 ├── internal
 │   ├── app
 │   │   └── bot     - Бот
