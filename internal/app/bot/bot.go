@@ -3,7 +3,6 @@ package bot
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"log/slog"
 	"os"
 	"syscall"
@@ -63,17 +62,21 @@ func (b *Bot) Run() {
 		scanner.Scan()
 		userInput := scanner.Text()
 
+		if userInput == "" {
+			continue
+		}
+
 		if userInput == "exit" {
 			err := syscall.Kill(pid, syscall.SIGINT)
 			if err != nil {
-				log.Printf("Error sending signal: %v", err)
+				b.log.Error("error sending signal: %w", logger.Err(err))
 			}
 			break
 		}
 
 		resp, err := b.r.Route(userInput)
 		if err != nil {
-			b.log.Error("Произошла ошибка:", logger.Err(err))
+			b.log.Error("route error:", logger.Err(err))
 			fmt.Println("Бот: Произошла ошибка. Пожалуйста, повторите запрос")
 		} else {
 			fmt.Println("Бот:", resp)
