@@ -1,5 +1,5 @@
-env: local
+env: local # Возможные варианты: local, dev, prod
 open_ai:
   model: gpt-oss-20b
-  url:
-  api_key: 
+  url: <url>/v1
+  api_key: <api-key>
