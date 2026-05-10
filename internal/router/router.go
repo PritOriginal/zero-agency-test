@@ -43,7 +43,7 @@ func (r *Router) Route(userInput string) (string, error) {
 
 	skill, ok := r.skills[tag]
 	if !ok {
-		return "", fmt.Errorf("%s: подходящий навык отсутствует", op)
+		return "", fmt.Errorf("%s: skill not registered", op)
 	}
 	resp, err := skill.Execute(userInput)
 	if err != nil {

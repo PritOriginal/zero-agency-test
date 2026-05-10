@@ -76,7 +76,7 @@ func (b *Bot) Run() {
 
 		resp, err := b.r.Route(userInput)
 		if err != nil {
-			b.log.Error("Произошла ошибка:", logger.Err(err))
+			b.log.Error("route error:", logger.Err(err))
 			fmt.Println("Бот: Произошла ошибка. Пожалуйста, повторите запрос")
 		} else {
 			fmt.Println("Бот:", resp)
