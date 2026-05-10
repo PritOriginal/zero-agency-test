@@ -46,10 +46,9 @@ func New(log *slog.Logger, client Client, allowedTags []string) *Classifier {
 func (c *Classifier) Classify(ctx context.Context, userInput string) (string, error) {
 	const op = "classifier.Classifier.Classify"
 
-	systemPromt := fmt.Sprintf(
-		"Ты диспетчер. Прочитай сообщение и верни ТОЛЬКО JSON формата %s. Допустимые теги: %s. Никакого другого текста писать нельзя.",
-		classifyResponseExampleStr, strings.Join(c.allowedTags, ","),
-	)
+	if userInput == "" {
+		return "", fmt.Errorf("%s: user input is empty", op)
+	}
 
 	aiResponse, err := c.client.DoRequest(ctx, systemPromt, userInput)
 	if err != nil {
