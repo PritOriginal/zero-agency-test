@@ -4,6 +4,8 @@
 
 ## О проекте
 
+![Zero Agency logo](./docs/logo.webp)
+
 В данном репозитории представлено выполненное тестовое задание для компании [Zero Agency](https://zeroagency.ru/).
 
 Текст задания представлен в файле [task.md](./task.md).
