@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
+	"slices"
 	"strings"
 )
 
@@ -60,6 +61,10 @@ func (c *Classifier) Classify(ctx context.Context, userInput string) (string, er
 		return "", fmt.Errorf("%s: %w", op, err)
 	}
 	tag := response.Category
+
+	if !slices.Contains(c.allowedTags, tag) {
+		return "", fmt.Errorf("%s: tag %s not supported", op, tag)
+	}
 
 	return tag, nil
 }
