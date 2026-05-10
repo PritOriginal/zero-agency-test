@@ -21,7 +21,7 @@ type ClassifierSuite struct {
 func (st *ClassifierSuite) SetupSuite() {
 	st.log = slog.New(slog.DiscardHandler)
 	st.client = NewMockClient(st.T())
-	st.classifier = New(st.log, st.client, []string{"test"})
+	st.classifier = New(st.log, st.client, []string{"support_urgency"})
 }
 
 func TestClassifier(t *testing.T) {
@@ -35,41 +35,66 @@ type method[T any] struct {
 
 func (st *ClassifierSuite) TestСlassify() {
 	tests := []struct {
-		name             string
-		doRequest        method[string]
-		wantErrUnmarshal bool
+		name                  string
+		userInput             string
+		wantEmptyInputErr     bool
+		doRequest             method[string]
+		wantErrUnmarshal      bool
+		wantErrUnsupportedTag bool
 	}{
 		{
-			name: "Ok",
+			name:      "Ok",
+			userInput: "тест",
 			doRequest: method[string]{
 				data: `{"category": "support_urgency"}`,
 			},
 		},
 		{
-			name: "Err-APIClassify",
+			name:              "Err-EmptyUserInput",
+			userInput:         "",
+			wantEmptyInputErr: true,
+		},
+		{
+			name:      "Err-APIClassify",
+			userInput: "тест",
 			doRequest: method[string]{
 				err: errors.New(""),
 			},
 		},
 		{
-			name: "Err-Unmarshal",
+			name:      "Err-Unmarshal",
+			userInput: "тест",
 			doRequest: method[string]{
 				data: `{"category": "support_urgency"`,
 			},
 			wantErrUnmarshal: true,
+		},
+		{
+			name:      "Err-NotSupportedTag",
+			userInput: "тест",
+			doRequest: method[string]{
+				data: `{"category": "test"}`,
+			},
+			wantErrUnsupportedTag: true,
 		},
 	}
 
 	for _, tt := range tests {
 		st.Run(tt.name, func() {
 			func() {
+				if tt.wantEmptyInputErr {
+					return
+				}
 				st.client.On("DoRequest", mock.Anything, mock.AnythingOfType("string"), mock.AnythingOfType("string")).Once().
 					Return(tt.doRequest.data, tt.doRequest.err)
 			}()
 
-			tag, err := st.classifier.Classify(context.Background(), "тест")
+			tag, err := st.classifier.Classify(context.Background(), tt.userInput)
 
-			if tt.doRequest.err == nil && !tt.wantErrUnmarshal {
+			if !tt.wantEmptyInputErr &&
+				tt.doRequest.err == nil &&
+				!tt.wantErrUnmarshal &&
+				!tt.wantErrUnsupportedTag {
 				st.Equal(tags.SupportUrgency, tag)
 				st.NoError(err)
 			} else {

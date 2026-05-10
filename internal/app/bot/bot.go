@@ -63,6 +63,10 @@ func (b *Bot) Run() {
 		scanner.Scan()
 		userInput := scanner.Text()
 
+		if userInput == "" {
+			continue
+		}
+
 		if userInput == "exit" {
 			err := syscall.Kill(pid, syscall.SIGINT)
 			if err != nil {
