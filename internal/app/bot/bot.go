@@ -8,9 +8,6 @@ import (
 	"syscall"
 
 	"github.com/PritOriginal/zero-agency-test/internal/classifier"
-	httpclient "github.com/PritOriginal/zero-agency-test/internal/client/http"
-	openaiclient "github.com/PritOriginal/zero-agency-test/internal/client/openai"
-	"github.com/PritOriginal/zero-agency-test/internal/config"
 	"github.com/PritOriginal/zero-agency-test/internal/router"
 	"github.com/PritOriginal/zero-agency-test/internal/shared/tags"
 	"github.com/PritOriginal/zero-agency-test/internal/skills"
@@ -22,17 +19,7 @@ type Bot struct {
 	r   *router.Router
 }
 
-func NewWithHttpClient(log *slog.Logger, cfg *config.Config) *Bot {
-	httpClient := httpclient.New(cfg.OpenAI.Model, cfg.OpenAI.URL, cfg.OpenAI.ApiKey)
-	return new(log, httpClient)
-}
-
-func NewWithOpenAiClient(log *slog.Logger, cfg *config.Config) *Bot {
-	openAiClient := openaiclient.New(cfg.OpenAI.Model, cfg.OpenAI.URL, cfg.OpenAI.ApiKey)
-	return new(log, openAiClient)
-}
-
-func new(log *slog.Logger, client classifier.Client) *Bot {
+func New(log *slog.Logger, client classifier.Client) *Bot {
 	classifierService := classifier.New(log, client, []string{
 		tags.InfoRequest,
 		tags.SupportUrgency,
