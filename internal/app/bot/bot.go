@@ -24,15 +24,15 @@ type Bot struct {
 
 func NewWithHttpClient(log *slog.Logger, cfg *config.Config) *Bot {
 	httpClient := httpclient.New(cfg.OpenAI.Model, cfg.OpenAI.URL, cfg.OpenAI.ApiKey)
-	return new(log, httpClient)
+	return New(log, httpClient)
 }
 
 func NewWithOpenAiClient(log *slog.Logger, cfg *config.Config) *Bot {
 	openAiClient := openaiclient.New(cfg.OpenAI.Model, cfg.OpenAI.URL, cfg.OpenAI.ApiKey)
-	return new(log, openAiClient)
+	return New(log, openAiClient)
 }
 
-func new(log *slog.Logger, client classifier.Client) *Bot {
+func New(log *slog.Logger, client classifier.Client) *Bot {
 	classifierService := classifier.New(log, client, []string{
 		tags.InfoRequest,
 		tags.SupportUrgency,
