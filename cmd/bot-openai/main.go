@@ -7,6 +7,7 @@ import (
 	"syscall"
 
 	"github.com/PritOriginal/zero-agency-test/internal/app/bot"
+	openaiclient "github.com/PritOriginal/zero-agency-test/internal/client/openai"
 	"github.com/PritOriginal/zero-agency-test/internal/config"
 	slogger "github.com/PritOriginal/zero-agency-test/pkg/logger"
 )
@@ -18,7 +19,8 @@ func main() {
 		log.Fatalf("error init logger: %v", err)
 	}
 
-	b := bot.NewWithOpenAiClient(logger, cfg)
+	openAiClient := openaiclient.New(cfg.OpenAI.Model, cfg.OpenAI.URL, cfg.OpenAI.ApiKey)
+	b := bot.New(logger, openAiClient)
 
 	go func() {
 		b.Run()
